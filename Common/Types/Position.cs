@@ -23,8 +23,9 @@ public partial class Position
 
     public Position(string position)
     {
+        var upperCasePosition = position.ToUpper();
         var regex = PositionStringRegex();
-        var match = regex.Match(StringValue = position);
+        var match = regex.Match(StringValue = upperCasePosition);
 
         if (!match.Success)
         {
@@ -37,14 +38,14 @@ public partial class Position
         Column = column[0] - 65;
         Row = int.Parse(row) - 1;
 
-        StringValue = position;
+        StringValue = upperCasePosition;
     }
 
     public Position(int column, int row)
     {
         Column = column;
         Row = row;
-        StringValue = $"{(char)(Column + 64)}{Row + 1}";
+        StringValue = $"{(char)(Column + 65)}{Row + 1}";
     }
     public Position GetNewPosition(MoveOffset move)
     {
@@ -70,22 +71,6 @@ public partial class Position
     public override int GetHashCode()
     {
         return HashCode.Combine(Column, Row, StringValue);
-    }
-
-
-    public IEnumerable<Position> GetValidMoves(PieceType type)
-    {
-        if (type != PieceType.Knight)
-            throw new ArgumentException($"{type} ia not currently supported.");
-
-        
-        if (Row + 2 < Constants.MaxRowIndex - 1)
-        {
-            if (Column > Constants.MinColumnIndex)
-            {
-                yield return new Position("AA");
-            }
-        }
     }
 
     [GeneratedRegex("^([A-H])([1-8])$")]

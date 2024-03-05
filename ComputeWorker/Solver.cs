@@ -1,13 +1,38 @@
 ﻿using Common.Types;
 namespace ComputeWorker
 {
-	public static class Solver
+	public class Solver
 	{
-		
+		private readonly IMoveBuilder _moveBuilder;
 
-		public static Solution Solve(string start, string end)
+		public Solver(IMoveBuilder moveBuilder)
 		{
-			return new Solution { Moves = Array.Empty<Position>() };
+			_moveBuilder = moveBuilder;
+		}
+		public Solution Solve(string start, string end)
+		{
+			var startPosition = new Position(start);
+			var endPosition = new Position(end);
+
+			var stack = new Queue<Node>();
+			
+			stack.Enqueue(Node.From(startPosition));
+
+			while (stack.Count > 0)
+			{
+				var currentNode = stack.Dequeue();
+				var currentPosition = currentNode.Position;
+
+				if (currentPosition.Equals(endPosition))
+					return new Solution { Moves = currentNode.GetAllMoveStrings(), NumberOfMoves = currentNode.Index};
+
+				foreach (var validMove in _moveBuilder.GetValidMoves(currentPosition, PieceType.Knight))
+				{
+					stack.Enqueue(currentNode.Next(validMove));
+				}
+			}
+
+			throw new Exception("Cannot solve");
 		}
 	}
 }

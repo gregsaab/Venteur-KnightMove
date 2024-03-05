@@ -2,7 +2,7 @@ using Common.Types;
 
 namespace ComputeWorker;
 
-static class MovesPerPiece
+internal static class MovesPerPiece
 {
     public static readonly MoveOffset[] Knight =
     {
@@ -18,13 +18,18 @@ static class MovesPerPiece
     };
 }
 
-public class MoveBuilder
+public interface IMoveBuilder
 {
-    public IEnumerable<Position> GetMoves(Position position, PieceType type)
+    IEnumerable<Position> GetValidMoves(Position position, PieceType type);
+}
+
+public class MoveBuilder : IMoveBuilder
+{
+    public IEnumerable<Position> GetValidMoves(Position position, PieceType type)
     {
         if (type != PieceType.Knight)
             throw new ArgumentException($"{type} is not currently supported");
 
-        return MovesPerPiece.Knight.Select(position.GetNewPosition);
+        return MovesPerPiece.Knight.Select(position.GetNewPosition).Where(x => x.IsValid());
     }
 }
