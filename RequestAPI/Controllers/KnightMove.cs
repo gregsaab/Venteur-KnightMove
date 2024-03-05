@@ -1,4 +1,6 @@
+using System.Text.Json;
 using Azure.Storage.Queues;
+using Common.Types;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RequestAPI.Controllers;
@@ -20,8 +22,9 @@ public class KnightMoveController : ControllerBase
     public Guid Get()
     {
         var guid = Guid.NewGuid();
+        var request = new SolveRequest { Start = "A1", End = "F5", RequestId = guid };
         using var _ = _logger.BeginScope(new Dictionary<string, object>{{"RequestId", guid}});
-        _queueClient.SendMessageAsync($"boom {guid}");
+        _queueClient.SendMessageAsync(JsonSerializer.Serialize(request));
         return guid;
      }
 }
