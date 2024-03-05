@@ -11,7 +11,7 @@ public class SolverSpecs
     [TestCase("A1", "F5", "A1:B3:D4:F5")]
     //[TestCase("A1", "C2", "A1:C2")]
     //[TestCase("A1", "C2", "A1:C2")]
-    public void Should_solve_shit(string start, string end, string expectedMoves)
+    public void Should_be_able_to_solve(string start, string end, string expectedMoves)
     {
         var solution = _solver.Solve(start, end);
         var expectedLength = expectedMoves.Split(":").Length - 1;
