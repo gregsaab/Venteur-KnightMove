@@ -25,6 +25,7 @@ namespace ComputeWorker.Utils
 		/// </summary>
 		/// <param name="start">Starting position e.g. A1</param>
 		/// <param name="end">Ending position e.g. C4</param>
+		/// <param name="type">The type of piece that you wish to solve for</param>
 		/// <returns>The solution object with the shortest path and number of moves</returns>
 		/// <exception cref="ArgumentException"></exception>
 		/// <exception cref="Exception"></exception>
