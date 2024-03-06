@@ -4,7 +4,7 @@ First off, thank you for the consideration!
 
 ## Description
 The solution provides a means of solving for the shortest path for knight movements in the context of a valid chess game.
-This codebase contains projects for three different servers - `RequestAPI`, `ResultAPI`, and `ComputeWorker`. Additionally, there is `Common` project which contains types shared betwixt the aforementioned projects.
+This codebase contains projects for three different servers - `RequestAPI`, `ResultAPI`, and `ComputeWorker`. Additionally, there is `Common` project which contains types shared betwixt the aforementioned projects and a `Specs` project with a smattering of nUnit tests.
 
 ## Usage
 Here is a [postman collection](https://api.postman.com/collections/20359850-fb3db60f-773e-40d8-b191-45c1c61c530a?access_key=PMAT-01HR9AQ7T43SZAX3P7R4YRS3GH) to interface with the deployed solution.
