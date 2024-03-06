@@ -24,7 +24,7 @@ public class KnightMoveController : ControllerBase
     /// then enqueues valid requests onto message queue
     /// </summary>
     /// <param name="requestParams">This is deserialized from query parameters</param>
-    /// <returns></returns>
+    /// <returns>A response with a message and operation id</returns>
     [HttpPost]
     public Response Post([FromQuery] Request requestParams)
     {
