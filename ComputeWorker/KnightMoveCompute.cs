@@ -33,30 +33,29 @@ namespace ComputeWorker
         {
             var request = JsonSerializer.Deserialize<SolveRequest>(myQueueItem);
             
-
             if (request == null)
             {
-                _logger.LogWarning("Invalid request", myQueueItem);
+                _logger.LogWarning("Invalid request");
                 return null;
             }
-                
-
-            _logger.LogInformation("Processing request", request);
-
+            
+            _logger.LogInformation("Processing request");
+            
             try
             {
                 var solution = _solver.Solve(request.Start, request.End, PieceType.Knight);
 
-                var results = new ResultsData(request.RequestId.ToString(), solution.Moves, solution.NumberOfMoves, request.Start, request.End);
+                var results = new ResultsData(request.RequestId.ToString(), solution.Moves, solution.NumberOfMoves,
+                    request.Start, request.End);
 
                 if (string.IsNullOrEmpty(request.Callback)) return results;
-                
-                
-                var httpClient = new HttpClient();
-                await httpClient.PostAsJsonAsync(request.Callback, results);
+
+                // if the request has a callback url, let's try to send a webhook callback
+                await WebhookCallback.Send(request.Callback, results);
 
                 return results;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 _logger.LogError($"An error occurred processing request {request.RequestId}", e);
                 return new ResultsData(request.RequestId.ToString(), e.Message);
