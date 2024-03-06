@@ -3,8 +3,7 @@ using Azure.Storage.Queues;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddScoped<QueueClient>((service) => new QueueClient(service.GetService<IConfiguration>()?.GetConnectionString("REQUEST_QUEUE"), "knightmoverequests"));
+builder.Services.AddScoped<QueueClient>((service) => new QueueClient(service.GetService<IConfiguration>()?.GetConnectionString("REQUEST_QUEUE"), "knightmoverequests", new QueueClientOptions{MessageEncoding = QueueMessageEncoding.Base64}));
 
 
 builder.Services.AddControllers();

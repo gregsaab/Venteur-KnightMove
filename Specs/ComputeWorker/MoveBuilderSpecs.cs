@@ -1,5 +1,6 @@
 using Common.Types;
 using ComputeWorker;
+using ComputeWorker.Utils;
 
 namespace Specs.ComputeWorker;
 

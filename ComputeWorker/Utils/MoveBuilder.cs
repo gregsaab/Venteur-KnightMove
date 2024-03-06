@@ -1,6 +1,6 @@
 using Common.Types;
 
-namespace ComputeWorker;
+namespace ComputeWorker.Utils;
 
 internal static class MovesPerPiece
 {

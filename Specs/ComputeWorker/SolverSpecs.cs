@@ -1,4 +1,5 @@
 using ComputeWorker;
+using ComputeWorker.Utils;
 
 namespace Specs.ComputeWorker;
 

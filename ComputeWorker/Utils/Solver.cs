@@ -1,7 +1,13 @@
 ﻿using Common.Types;
-namespace ComputeWorker
+
+namespace ComputeWorker.Utils
 {
-	public class Solver
+    public interface ISolver
+	{
+		Solution Solve(string start, string end);
+    }
+
+	public class Solver : ISolver
 	{
 		private readonly IMoveBuilder _moveBuilder;
 
