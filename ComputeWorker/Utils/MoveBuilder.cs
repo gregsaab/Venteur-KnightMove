@@ -1,28 +1,18 @@
+using Common;
 using Common.Types;
 
-namespace ComputeWorker.Utils;
-
-internal static class MovesPerPiece
-{
-    public static readonly MoveOffset[] Knight =
-    {
-        new() {ColumnDelta = 1, RowDelta = 2},
-        new() {ColumnDelta = -1, RowDelta = 2},
-        new() {ColumnDelta = 1, RowDelta = -2},
-        new() {ColumnDelta = -1, RowDelta = -2},
-        
-        new() {ColumnDelta = 2, RowDelta = 1},
-        new() {ColumnDelta = -2, RowDelta = 1},
-        new() {ColumnDelta = 2, RowDelta = -1},
-        new() {ColumnDelta = -2, RowDelta = -1},
-    };
-}
+namespace ComputeWorker;
 
 public interface IMoveBuilder
 {
     IEnumerable<Position> GetValidMoves(Position position, PieceType type);
 }
 
+/// <summary>
+/// This iterates over the MovesPerPiece static class for the specific piece type
+/// (only support knight at present), creates a Position object, then filters out
+/// the invalid positions
+/// </summary>
 public class MoveBuilder : IMoveBuilder
 {
     public IEnumerable<Position> GetValidMoves(Position position, PieceType type)

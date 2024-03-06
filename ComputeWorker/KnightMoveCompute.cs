@@ -17,6 +17,13 @@ namespace ComputeWorker
             _solver = solver;
         }
 
+        /// <summary>
+        /// This is a Function App method that is triggered off of items being enqueued
+        /// onto the knightmoverequest queue. We get the connection string from the configured vault
+        /// in Azure. We return an entry that we store in a NoSQL Table. 
+        /// </summary>
+        /// <param name="myQueueItem">The base64 json string that the api enqueues</param>
+        /// <returns></returns>
         [Function("knightmovecompute")]
         [TableOutput("Results", Connection = "STORAGE")]
         public ResultsData? Run([QueueTrigger("knightmoverequests", Connection = "REQUEST_QUEUE")] string myQueueItem)
@@ -32,6 +39,7 @@ namespace ComputeWorker
                 
 
             _logger.LogInformation("Processing request", request);
+
             try
             {
                 var solution = _solver.Solve(request.Start, request.End, PieceType.Knight);
