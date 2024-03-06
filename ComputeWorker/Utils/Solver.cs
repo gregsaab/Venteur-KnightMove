@@ -34,10 +34,10 @@ namespace ComputeWorker.Utils
 			var startPosition = new Position(start);
 			var endPosition = new Position(end);
 
-			if (startPosition.IsValid())
+			if (!startPosition.IsValid())
 				throw new ArgumentException($"{start} is not a valid starting position");
 
-            if (endPosition.IsValid())
+            if (!endPosition.IsValid())
                 throw new ArgumentException($"{start} is not a valid ending position");
 
             var stack = new Queue<Node>();
