@@ -1,10 +1,10 @@
-using Common.Types;
+﻿using Common.Types;
 
 namespace ComputeWorker.Utils
 {
     public interface ISolver
 	{
-		Solution Solve(string start, string end);
+		Solution Solve(string start, string end, PieceType type);
     }
 
 	public class Solver : ISolver
@@ -28,11 +28,18 @@ namespace ComputeWorker.Utils
 		/// <returns>The solution object with the shortest path and number of moves</returns>
 		/// <exception cref="ArgumentException"></exception>
 		/// <exception cref="Exception"></exception>
+		public Solution Solve(string start, string end, PieceType type)
 		{
 			var startPosition = new Position(start);
 			var endPosition = new Position(end);
 
-			var stack = new Queue<Node>();
+			if (startPosition.IsValid())
+				throw new ArgumentException($"{start} is not a valid starting position");
+
+            if (endPosition.IsValid())
+                throw new ArgumentException($"{start} is not a valid ending position");
+
+            var stack = new Queue<Node>();
 			
 			stack.Enqueue(Node.From(startPosition));
 
@@ -44,7 +51,7 @@ namespace ComputeWorker.Utils
 				if (currentPosition.Equals(endPosition))
 					return new Solution { Moves = currentNode.GetAllMoveStrings(), NumberOfMoves = currentNode.Index};
 
-				foreach (var validMove in _moveBuilder.GetValidMoves(currentPosition, PieceType.Knight))
+				foreach (var validMove in _moveBuilder.GetValidMoves(currentPosition, type))
 				{
 					stack.Enqueue(currentNode.Next(validMove));
 				}
