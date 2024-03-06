@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using Common.Types;
 using ComputeWorker.Utils;
 using Microsoft.Azure.Functions.Worker;
@@ -26,7 +29,7 @@ namespace ComputeWorker
         /// <returns></returns>
         [Function("knightmovecompute")]
         [TableOutput("Results", Connection = "STORAGE")]
-        public ResultsData? Run([QueueTrigger("knightmoverequests", Connection = "REQUEST_QUEUE")] string myQueueItem)
+        public async Task<ResultsData?> Run([QueueTrigger("knightmoverequests", Connection = "REQUEST_QUEUE")] string myQueueItem)
         {
             var request = JsonSerializer.Deserialize<SolveRequest>(myQueueItem);
             
@@ -43,7 +46,16 @@ namespace ComputeWorker
             try
             {
                 var solution = _solver.Solve(request.Start, request.End, PieceType.Knight);
-                return new ResultsData(request.RequestId.ToString(), solution.Moves, solution.NumberOfMoves, request.Start, request.End);
+
+                var results = new ResultsData(request.RequestId.ToString(), solution.Moves, solution.NumberOfMoves, request.Start, request.End);
+
+                if (string.IsNullOrEmpty(request.Callback)) return results;
+                
+                
+                var httpClient = new HttpClient();
+                await httpClient.PostAsJsonAsync(request.Callback, results);
+
+                return results;
             }catch(Exception e)
             {
                 _logger.LogError($"An error occurred processing request {request.RequestId}", e);

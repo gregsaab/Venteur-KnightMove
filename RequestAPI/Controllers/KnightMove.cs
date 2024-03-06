@@ -44,7 +44,7 @@ public class KnightMoveController : ControllerBase
             return new Response { Message = $"The target parameter is not valid: {requestParams.target}", OperationId = guid};
         }
         
-        var request = new SolveRequest { Start = "A1", End = "F5", RequestId = guid };
+        var request = new SolveRequest { Start = "A1", End = "F5", RequestId = guid, Callback = requestParams.callback };
         _queueClient.SendMessageAsync(JsonSerializer.Serialize(request));
         
         return new Response{OperationId = guid, Message = $"Operation Id {guid} was created. Please query it to find your results."};
