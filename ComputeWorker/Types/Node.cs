@@ -20,7 +20,13 @@ internal class Node
         return new Node { Position = position, Previous = this, Index = Index + 1};
     }
 
-    public string GetAllMoveStrings()
+    /// <summary>
+    /// This will iterate through the Node's parents (Previous) and append each respective position string to an array
+    /// Once we append the position strings all the way up the root, we just return a string that is formed by joining the
+    /// positions together
+    /// </summary>
+    /// <returns></returns>
+    public string GetFullMovementPath()
     {
         var positions = new List<string>();
 

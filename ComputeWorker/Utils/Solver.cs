@@ -50,7 +50,7 @@ namespace ComputeWorker.Utils
 				var currentPosition = currentNode.Position;
 
 				if (currentPosition.Equals(endPosition))
-					return new Solution { Moves = currentNode.GetAllMoveStrings(), NumberOfMoves = currentNode.Index};
+					return new Solution { Moves = currentNode.GetFullMovementPath(), NumberOfMoves = currentNode.Index};
 
 				foreach (var validMove in _moveBuilder.GetValidMoves(currentPosition, type))
 				{
