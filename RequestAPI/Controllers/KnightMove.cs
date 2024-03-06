@@ -19,8 +19,14 @@ public class KnightMoveController : ControllerBase
         _queueClient = queueClient ?? throw new Exception("Did not receive queue client");
     }
 
+    /// <summary>
+    /// This function takes knight move requests via a POST, does validation on the parameters
+    /// then enqueues valid requests onto message queue
+    /// </summary>
+    /// <param name="requestParams">This is deserialized from query parameters</param>
+    /// <returns></returns>
     [HttpPost]
-    public Response Post([FromQuery] Types.Request requestParams)
+    public Response Post([FromQuery] Request requestParams)
     {
         var guid = Guid.NewGuid();
         var startPosition = new Position(requestParams.source);
