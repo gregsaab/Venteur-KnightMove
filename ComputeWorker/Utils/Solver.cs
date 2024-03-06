@@ -1,4 +1,4 @@
-﻿using Common.Types;
+using Common.Types;
 
 namespace ComputeWorker.Utils
 {
@@ -15,7 +15,19 @@ namespace ComputeWorker.Utils
 		{
 			_moveBuilder = moveBuilder;
 		}
-		public Solution Solve(string start, string end)
+
+		/// <summary>
+		/// This solver uses a breath-first-search algorithm to find the shortest
+		/// path from the start position to the end position. This uses a FIFO queue
+		/// to facilitate the BFS. We start off by enqueuing the starting position then
+		/// start looping until the queue is empty (or we find the ending position).
+		/// While looping, we enqueue all possible valid moves for the current position.
+		/// </summary>
+		/// <param name="start">Starting position e.g. A1</param>
+		/// <param name="end">Ending position e.g. C4</param>
+		/// <returns>The solution object with the shortest path and number of moves</returns>
+		/// <exception cref="ArgumentException"></exception>
+		/// <exception cref="Exception"></exception>
 		{
 			var startPosition = new Position(start);
 			var endPosition = new Position(end);

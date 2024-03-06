@@ -22,13 +22,25 @@ namespace ComputeWorker
         public ResultsData? Run([QueueTrigger("knightmoverequests", Connection = "REQUEST_QUEUE")] string myQueueItem)
         {
             var request = JsonSerializer.Deserialize<SolveRequest>(myQueueItem);
+            
 
             if (request == null)
+            {
+                _logger.LogWarning("Invalid request", myQueueItem);
                 return null;
+            }
+                
 
-            var solution = _solver.Solve(request.Start, request.End);
-
-            return new ResultsData(request.RequestId.ToString(), solution.Moves, solution.NumberOfMoves, request.Start, request.End);
+            _logger.LogInformation("Processing request", request);
+            try
+            {
+                var solution = _solver.Solve(request.Start, request.End, PieceType.Knight);
+                return new ResultsData(request.RequestId.ToString(), solution.Moves, solution.NumberOfMoves, request.Start, request.End);
+            }catch(Exception e)
+            {
+                _logger.LogError($"An error occurred processing request {request.RequestId}", e);
+                return new ResultsData(request.RequestId.ToString(), e.Message);
+            }
         }
     }
 }
