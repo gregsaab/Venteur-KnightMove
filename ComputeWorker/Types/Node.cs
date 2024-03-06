@@ -5,7 +5,7 @@ namespace ComputeWorker;
 internal class Node
 {
     public Position Position { get; init; }
-    public uint Index { get; init; } = 0;
+    public int Index { get; init; } = 0;
 			
     public Node? Previous { get; init; }
 
