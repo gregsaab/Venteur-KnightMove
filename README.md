@@ -23,6 +23,8 @@ and the `ComputeWorker` will post the result to that webhook.
 ### Architecture 
 A web api (`RequestAPI`) takes in `Request` payloads, performs basic validation to verify that the `source` and `target` properties are valid positions within a chess game, then either returns a validation error or enqueues the request onto the `knightmoverequests` queue. A function app (`ComputeWorker`) is in place that is triggered by new items on the `knightmoverequests` queue. This function app perfoms the computation to find the shortest path, then when it does it will insert a new `ResultsData` object into a storage table (nosql) with the `operationId` as the `rowKey`.
 
+Using a queue in between the request api and function app made sense to me as Azure sdk provides an easy way of setting up triggers. To me, that is a simple way to create an asynchronous background worker for this workflow. I added an optional `callback` since that provides a bit better UX than having the user constantly poll the results api -- pushed based rather than poll.
+
 ### Algorithm
 The logic written to find the shortest path is as follows:
 1. Enqueue starting position to a `Queue<Position>`
