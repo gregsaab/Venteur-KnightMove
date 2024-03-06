@@ -1,5 +1,4 @@
 using System.Text.Json;
-using Azure.Core;
 using Azure.Storage.Queues;
 using Common.Types;
 using Microsoft.AspNetCore.Mvc;
