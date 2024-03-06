@@ -7,7 +7,7 @@ public class Response
 {
     public string OperationId { get; set; }
     public string? ShortestPath { get; set; }
-    public uint? NumberOfMoves { get; set; }
+    public int? NumberOfMoves { get; set; }
     public string? Starting { get; set; }
     public string? Ending { get; set; }
     public string? Error { get; set; }
@@ -18,7 +18,7 @@ public class Response
         if (results == null)
             return new Response { Message = "No results for this operation id, please check back later ;)" };
 
-        if (results.Error != null)
+        if (!string.IsNullOrEmpty(results.Error))
             return new Response { OperationId = results.OperationId, Message = results.Error };
         
         return new Response

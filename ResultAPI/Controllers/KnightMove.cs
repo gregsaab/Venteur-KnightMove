@@ -1,6 +1,7 @@
 using Azure.Data.Tables;
 using Common.Types;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using ResultAPI.Types;
 
 namespace ResultAPI.Controllers;
@@ -21,21 +22,19 @@ public class KnightMoveController : ControllerBase
     /// </summary>
     /// <param name="requestParams">This is deserialized from query parameters</param>
     /// <returns>A response with the result</returns>
-    [HttpPost]
-    public Response Post([FromQuery] Request requestParams)
+    [HttpGet]
+    public object Get([FromQuery] Request requestParams)
     {
-        var results = _tableClient.Query<ResultsData>("PartitionKey='CA' & RowKey ='123456789'")?.ToList();
-        
-        if (results == null || results.Count == 0)
+        try
         {
-            return new Response
-            {
-                OperationId = requestParams.operationId,
-                Message = "No results for this operation id, please check back later ;)"
-            };
+            var result = _tableClient.GetEntityIfExists<ResultsData>("partition", requestParams.operationId);
+
+            return Types.Response.From(result.HasValue ? result.Value : null);
+        }
+        catch (Exception e)
+        {
+            return new Response { Message = e.Message };
         }
 
-        var result = results.First();
-        return ResultAPI.Types.Response.From(result);
     }
 }

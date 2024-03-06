@@ -6,10 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
     <ItemGroup>
         <PackageReference Include="Azure.Data.Tables" Version="12.8.3" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.16"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.16" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="8.0.0-preview" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>

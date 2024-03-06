@@ -8,8 +8,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAzureAppConfiguration();
 
-builder.Services.AddScoped<TableClient>(service => new TableClient(service.GetService<IConfiguration>()?.GetConnectionString("STORAGE_CONNECTION_STRING"), "Results"));
+builder.Services.AddScoped<TableClient>(service => new TableClient(service.GetService<IConfiguration>()?.GetConnectionString("STORAGE"), "Results"));
 
 var app = builder.Build();
 
